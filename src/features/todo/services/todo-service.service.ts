@@ -24,4 +24,7 @@ export class TodoService{
   createTodo(todo : Todo) : Observable<Todo>{
     return this.httpClient.post<Todo>(this.url,todo)
   }
+  updateTodoById(id:string,todo:Todo) : Observable<Todo>{
+    return this.httpClient.put<Todo>(`${this.url}/${id}`,todo)
+  }
 }

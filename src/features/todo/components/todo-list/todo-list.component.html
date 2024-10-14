@@ -11,6 +11,7 @@
       <button [routerLink]="todo.id.toString()"> View Details</button>
       <button (click)="onDelete(todo.id.toString())"> Delete </button>
       <button routerLink="new"> Add New Todo</button>
+      <button routerLink="update/{{todo.id.toString()}}"> Update Todo</button>
     </div>
   }
 </div>
