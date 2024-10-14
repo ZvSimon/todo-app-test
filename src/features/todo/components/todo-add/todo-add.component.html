@@ -1,0 +1,19 @@
+<form [formGroup]="addTodo" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="userId">User ID:</label>
+    <input id="userId" formControlName="userId" type="number">
+  </div>
+  <div>
+    <label for="id">ID:</label>
+    <input id="id" formControlName="id" type="number">
+  </div>
+  <div>
+    <label for="title">Title:</label>
+    <input id="title" formControlName="title" type="text">
+  </div>
+  <div>
+    <label for="completed">Completed:</label>
+    <input id="completed" formControlName="completed" type="checkbox">
+  </div>
+  <button type="submit">Add Todo</button>
+</form>

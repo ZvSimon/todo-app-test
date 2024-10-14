@@ -1,0 +1,16 @@
+ <input [formControl]="search" >
+
+
+<div >
+  @for(todo of displayAllTodos$|async ; track todo.id){
+    <div class="todo ">
+      <td>ID : {{todo.id}}</td>
+      <td>Title  : {{todo.title}}</td>
+      <td> Task : {{todo.completed}}</td>
+      <td>UserId : {{todo.userId}}</td>
+      <button [routerLink]="todo.id.toString()"> View Details</button>
+      <button (click)="onDelete(todo.id.toString())"> Delete </button>
+      <button routerLink="new"> Add New Todo</button>
+    </div>
+  }
+</div>
