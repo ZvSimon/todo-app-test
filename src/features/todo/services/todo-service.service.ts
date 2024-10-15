@@ -1,30 +1,65 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {map, Observable, take} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {catchError, Observable, of, tap, throwError} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {Todo} from '../models/todo';
+import {MOCK_TODOS} from '../models/mock-todo';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TodoService{
-  private httpClient = inject(HttpClient)
-  private  url = 'https://jsonplaceholder.typicode.com/todos'
+export class TodoService {
+ private dataTodos = MOCK_TODOS;
 
-  getAllTodo() : Observable<Todo[]> {
-    return this.httpClient.get<Todo[]>(this.url).pipe(take(1),map(tods => tods.slice(0,10))
+ public getAllTodo() : Observable<Todo[]>{
+   return of(this.dataTodos)
+ }
+  public getTodoById(id: number): Observable<Todo | undefined> {
+    console.log('ID passé:', id);
+
+    // Vérifiez si les données sont bien chargées
+    if (!this.dataTodos || this.dataTodos.length === 0) {
+      console.warn('Les données Todos ne sont pas encore disponibles.');
+      return of(undefined); // Retourner un Observable vide si les données ne sont pas prêtes
+    }
+
+    return of(this.dataTodos).pipe(
+      tap((todos) => console.log('Liste complète des todos:', todos)),
+      map((todos) => todos.find((todo) => todo.id === id)),
+      tap((result) => {
+        if (result) {
+          console.log('Todo trouvé:', result);
+        } else {
+          console.error(`Todo avec ID ${id} non trouvé`);
+        }
+      })
     );
   }
-  getTodoById(id:string){
-    return this.httpClient.get<Todo>(`${this.url}/${id}`).pipe(take(1))
+
+  public deleteTodobyId(id: number) {
+    return of(this.dataTodos).pipe(
+      map((todos) => {
+        const index = todos.findIndex((todo) => todo.id === id);
+        return index !== -1 ? todos.splice(index, 1)[0] : undefined;
+      })
+    );
   }
 
-  deleteTodoById (id:string) : Observable<Todo>{
-    return this.httpClient.delete<Todo>(`${this.url}/${id}`).pipe(take(1))
+  public updateTodoById(id: number,todo : Todo){
+    return of(this.dataTodos).pipe(
+      map((todos) => {
+        const index = todos.findIndex((todo) => todo.id === id);
+        return index !== -1 ? todos.splice(index, 1, todo)[0] : undefined;
+      })
+    );
   }
-  createTodo(todo : Todo) : Observable<Todo>{
-    return this.httpClient.post<Todo>(this.url,todo).pipe(take(1))
+
+  public addTodo (todo: Todo){
+    return of(this.dataTodos).pipe(
+      map((todos) => {
+        todos.push(todo);
+        return todo;
+      })
+    );
   }
-  updateTodoById(id:string,todo:Todo) : Observable<Todo>{
-    return this.httpClient.put<Todo>(`${this.url}/${id}`,todo).pipe(take(1))
-  }
+
 }

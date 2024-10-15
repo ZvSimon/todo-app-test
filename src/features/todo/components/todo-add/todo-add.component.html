@@ -1,15 +1,12 @@
-<form [formGroup]="addTodo" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="userId">User ID:</label>
-    <input id="userId" formControlName="userId" type="number">
-  </div>
+<form [formGroup]="addTodoForm" (ngSubmit)="onSubmit()">
+
   <div>
     <label for="id">ID:</label>
-    <input id="id" formControlName="id" type="number">
+    <input id="id"  type="number" formControlName="id">
   </div>
   <div>
     <label for="title">Title:</label>
-    <input id="title" formControlName="title" type="text">
+    <input id="title"  type="text" formControlName="title">
   </div>
   <div>
     <label for="completed">Completed:</label>

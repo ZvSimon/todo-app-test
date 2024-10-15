@@ -1,17 +1,16 @@
  <input [formControl]="search" >
-
+<input type = checkbox [formControl]="check">
 
 <div >
-  @for(todo of displayAllTodos$|async ; track todo.id){
+  @for(todo of displayAllTodos$|async;track todo.id){
     <div class="todo ">
       <td>ID : {{todo.id}}</td>
       <td>Title  : {{todo.title}}</td>
       <td> Task : {{todo.completed}}</td>
-      <td>UserId : {{todo.userId}}</td>
-      <button [routerLink]="todo.id.toString()"> View Details</button>
-      <button (click)="onDelete(todo.id.toString())"> Delete </button>
+      <button [routerLink]="'/todo/' + todo.id"> View Details></button>
+      <button (click)="onDelete(todo.id)"> Delete </button>
       <button routerLink="new"> Add New Todo</button>
-      <button routerLink="update/{{todo.id.toString()}}"> Update Todo</button>
+      <button [routerLink]="'update/' +todo.id"> Update Todo</button>
     </div>
   }
 </div>

@@ -13,19 +13,17 @@ import {Router} from '@angular/router';
   styleUrl: './todo-add.component.css'
 })
 export default class TodoAddComponent {
-  todoService = inject(TodoService)
-  router = inject(Router);
-  addTodo = new FormGroup({
-    userId: new FormControl(),
+  private todoService = inject(TodoService);
+  private router = inject(Router)
+  addTodoForm = new FormGroup({
     id: new FormControl(),
     title: new FormControl(''),
     completed: new FormControl(false)
-
-  })
+  });
 
   onSubmit() {
-    this.todoService.createTodo(this.addTodo.value as Todo).subscribe({
-      complete:()=> this.router.navigate(['/todo'])
-    })
+    this.todoService.addTodo(this.addTodoForm.value as Todo).subscribe({
+      complete: () => this.router.navigate(['/todo'])
+    });
   }
 }

@@ -1,8 +1,9 @@
 import {Component, inject, input, OnInit} from '@angular/core';
 import {TodoService} from '../../services/todo-service.service';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {Todo} from '../../models/todo';
 import {AsyncPipe} from '@angular/common';
+import {toObservable} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-todo-details',
@@ -13,11 +14,12 @@ import {AsyncPipe} from '@angular/common';
   templateUrl: './todo-details.component.html',
   styleUrl: './todo-details.component.css'
 })
-export default class TodoDetailsComponent implements OnInit {
-  id = input.required<string>();
-  private todoService=inject(TodoService)
-  displayTodoById$ !: Observable<Todo>
-  ngOnInit() {
-   this.displayTodoById$ =  this.todoService.getTodoById(this.id())
+export default class TodoDetailsComponent  implements OnInit{
+  id = input.required<number>();
+  private todosService = inject(TodoService)
+  public displayTodoById$ !: Observable<Todo |undefined>
+
+  public ngOnInit() {
+    this.displayTodoById$ = this.todosService.getTodoById(Number(this.id()))
   }
 }

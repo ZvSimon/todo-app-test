@@ -11,8 +11,8 @@ import {Router} from '@angular/router';
   templateUrl: './update-todo.component.html',
   styleUrl: './update-todo.component.css'
 })
-export default class UpdateTodoComponent implements OnInit {
-  id = input.required<string>();
+export default class UpdateTodoComponent   implements OnInit{
+  id = input.required<number>();
   private todoService = inject(TodoService);
   private router = inject(Router);
   updateForm = new FormGroup({
@@ -22,13 +22,16 @@ export default class UpdateTodoComponent implements OnInit {
     completed: new FormControl(false)
   });
   ngOnInit() {
-    this.todoService.getTodoById(this.id()).subscribe(todo => {
-      this.updateForm.setValue(todo);
+    this.todoService.getTodoById(Number(this.id())).subscribe(todo => {
+      if (todo) {
+        this.updateForm.patchValue(todo);
+      }
     });
   }
   onSubmit() {
-    this.todoService.updateTodoById(this.id(), this.updateForm.value as Todo).subscribe({
+    this.todoService.updateTodoById(Number(this.id()), this.updateForm.value as Todo).subscribe({
       complete: () => this.router.navigate(['/todo'])
     });
   }
+
 }

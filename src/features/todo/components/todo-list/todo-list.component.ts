@@ -15,20 +15,24 @@ import {NavigationEnd, Router, RouterLink} from '@angular/router';
 })
 export default class TodoListComponent {
   private todoService = inject(TodoService)
-  public search = new FormControl('');
+  search = new FormControl('')
+  check = new FormControl(false)
   private refresh$$ = new Subject<void>();
-  public displayAllTodos$ : Observable<Todo[]>  = this.refresh$$.pipe(
+  public displayAllTodos$: Observable<Todo[]> = this.refresh$$.pipe(
     startWith(null),
     switchMap(() => this.todoService.getAllTodo()),
-    combineLatestWith(this.search.valueChanges.pipe(startWith(this.search.value))),
-    map(([todos,title ])=> todos.filter(profile=>profile.title.toLowerCase().includes((title ||'').toLowerCase())))
-  )
+    combineLatestWith(this.search.valueChanges.pipe(startWith(this.search.value)),this.check.valueChanges.pipe(startWith(this.check.value))),
+    map(([todos, title,checkbox]) => todos.filter(todo =>
+        todo.title.toLowerCase().includes((title || '').toLowerCase()) &&
+        (checkbox ? todo.completed: !todo.completed)
+      )
+    )
+  );
 
-  onDelete(id:string){
-    this.todoService.deleteTodoById(id).subscribe(() => {
+  onDelete(id: number) {
+    this.todoService.deleteTodobyId(id).subscribe(() => {
       this.refresh$$.next();
     })
   }
-
 
 }

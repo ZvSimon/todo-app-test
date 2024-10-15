@@ -1,4 +1,5 @@
-@if(displayTodoById$|async; as todo){
-  <td>Id : {{todo.id}}</td>
-  <td>Title :{{todo.title}} </td>
+@if(displayTodoById$|async ; as todoId){
+  <td>id : {{todoId.id}}</td>
+  <td>title : {{todoId.title}}</td>
+  <td>completed :{{todoId.completed}}</td>
 }
